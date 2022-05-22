@@ -16,9 +16,9 @@ bool isPrime(long long number){
     return true;
 }
 
-void PrimesThreadLoop(std::vector<long long> &counting, const long long start, const long long end, int index){
+void PrimesThreadLoop(std::vector<long long> &counting, std::vector<long long> &numbers, int index){
     long long prime_counter = 0;
-    for(long long number = start; number <= end ;number++)
+    for(long long number : numbers)
         if(isPrime(number))
             prime_counter++;
     counting[index] = prime_counter;
@@ -27,16 +27,22 @@ void PrimesThreadLoop(std::vector<long long> &counting, const long long start, c
 void PrimesMT(long long max){
     auto start = std::chrono::high_resolution_clock::now();
     std::vector<std::thread> threads;
-    threads.reserve(NUM_OF_THREADS);
+    std::vector<std::vector<long long>> thread_vectors;
     std::vector<long long> prime_counting;
+    threads.reserve(NUM_OF_THREADS);
+    thread_vectors.reserve(NUM_OF_THREADS);
     for(int i = 0; i < NUM_OF_THREADS; i++)
         prime_counting.push_back(0);
-    int chunk = max / NUM_OF_THREADS;
-    int prime_start = 0, prime_end = 0;
+    thread_vectors[0].push_back(2);
+    int cur_thread = 1;
+    for(long long i = 3; i < max; i++){
+        if(i%2==0)
+            continue;
+        thread_vectors[cur_thread].push_back(i);
+        cur_thread = (cur_thread >= NUM_OF_THREADS-1) ? 0 : cur_thread+1;
+    }
     for (int index = 0; index < NUM_OF_THREADS; index++){
-        prime_start = prime_end+1;
-        prime_end = (max-prime_start <= chunk) ? max : prime_start + chunk;
-        threads.push_back(std::thread(PrimesThreadLoop, std::ref(prime_counting), prime_start, prime_end, index));
+        threads.push_back(std::thread(PrimesThreadLoop, std::ref(prime_counting), std::ref(thread_vectors[index]), index));
     }
     for(std::thread& t: threads)
         t.join();
