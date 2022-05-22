@@ -40,5 +40,5 @@ count_primes
 Makefile
 
 #kdevelop
-.kde*
+.kde*/
 *.kdev*
