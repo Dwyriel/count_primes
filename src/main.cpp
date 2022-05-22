@@ -16,7 +16,7 @@ bool isPrime(long long number){
     return true;
 }
 
-void PrimesThreadLoop(std::vector<long long> &counting, std::vector<long long> &numbers, int index){
+void PrimesThreadLoop_BA(std::vector<long long> &counting, std::vector<long long> &numbers, int index){
     long long prime_counter = 0;
     for(long long number : numbers)
         if(isPrime(number))
@@ -24,7 +24,15 @@ void PrimesThreadLoop(std::vector<long long> &counting, std::vector<long long> &
     counting[index] = prime_counter;
 }
 
-void PrimesMT(long long max){
+void PrimesThreadLoop_ED(std::vector<long long> &counting, const long long start, const long long end, int index){
+    long long prime_counter = 0;
+    for(long long number = start; number <= end ;number++)
+        if(isPrime(number))
+            prime_counter++;
+    counting[index] = prime_counter;
+}
+
+void Primes_BetterAssigning(long long max){
     auto start = std::chrono::high_resolution_clock::now();
     std::vector<std::thread> threads;
     std::vector<std::vector<long long>> thread_vectors;
@@ -40,7 +48,34 @@ void PrimesMT(long long max){
         cur_thread = (cur_thread >= NUM_OF_THREADS-1) ? 0 : cur_thread+1;
     }
     for (int index = 0; index < NUM_OF_THREADS; index++){
-        threads.push_back(std::thread(PrimesThreadLoop, std::ref(prime_counting), std::ref(thread_vectors[index]), index));
+        threads.push_back(std::thread(PrimesThreadLoop_BA, std::ref(prime_counting), std::ref(thread_vectors[index]), index));
+    }
+    for(std::thread& t: threads)
+        t.join();
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> elapsed = end - start;
+    long long time_elapse = elapsed.count();
+    long long total_prime_count = 0;
+    for(long long& prime_count : prime_counting)
+        total_prime_count+=prime_count;
+    Logger::LogInfo("Prime numbers found: " + std::to_string(total_prime_count));
+    Logger::LogInfo("Time elapsed: " + std::to_string(time_elapse) + "ms");
+    threads.clear();
+}
+
+void Primes_EquallyDividing(long long max){
+    auto start = std::chrono::high_resolution_clock::now();
+    std::vector<std::thread> threads;
+    threads.reserve(NUM_OF_THREADS);
+    std::vector<long long> prime_counting;
+    for(int i = 0; i < NUM_OF_THREADS; i++)
+        prime_counting.push_back(0);
+    int chunk = max / NUM_OF_THREADS;
+    int prime_start = 0, prime_end = 0;
+    for (int index = 0; index < NUM_OF_THREADS; index++){
+        prime_start = prime_end+1;
+        prime_end = (max-prime_start <= chunk) ? max : prime_start + chunk;
+        threads.push_back(std::thread(PrimesThreadLoop_ED, std::ref(prime_counting), prime_start, prime_end, index));
     }
     for(std::thread& t: threads)
         t.join();
@@ -97,7 +132,7 @@ int main(int argc, char *argv[], char* envp[]) {
     Logger::LogInfo("Running on " + std::to_string(NUM_OF_THREADS) + " threads");
     Logger::LogInfo("Total numbers to check: " + std::to_string(number));
 
-    PrimesMT(number);
+    Primes_BetterAssigning(number);
 
     return 0;
 }
