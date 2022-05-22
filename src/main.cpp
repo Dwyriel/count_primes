@@ -35,9 +35,7 @@ void PrimesMT(long long max){
         prime_counting.push_back(0);
     thread_vectors[0].push_back(2);
     int cur_thread = 1;
-    for(long long i = 3; i < max; i++){
-        if(i%2==0)
-            continue;
+    for(long long i = 3; i <= max; i+=2){
         thread_vectors[cur_thread].push_back(i);
         cur_thread = (cur_thread >= NUM_OF_THREADS-1) ? 0 : cur_thread+1;
     }
