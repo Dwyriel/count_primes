@@ -54,7 +54,7 @@ void PrimesMT(long long max){
 int main(int argc, char *argv[], char* envp[]) {
     const std::string help1 = "-h", help2 = "--help";
     std::string arg1, arg2;
-    int number = 250000;
+    int number = 1000000;
     if(argc>3){
         Logger::LogError("More than two argument passed");
         return 1;
