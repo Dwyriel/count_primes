@@ -25,6 +25,7 @@ void PrimesThreadLoop(std::vector<long long> &counting, std::vector<long long> &
 }
 
 void PrimesMT(long long max){
+    auto start = std::chrono::high_resolution_clock::now();
     std::vector<std::thread> threads;
     std::vector<std::vector<long long>> thread_vectors;
     std::vector<long long> prime_counting;
@@ -32,13 +33,14 @@ void PrimesMT(long long max){
     thread_vectors.reserve(NUM_OF_THREADS);
     for(int i = 0; i < NUM_OF_THREADS; i++)
         prime_counting.push_back(0);
-
-    int cur_thread = 0;
-    for(long long i = 2; i < max; i++){
+    thread_vectors[0].push_back(2);
+    int cur_thread = 1;
+    for(long long i = 3; i < max; i++){
+        if(i%2==0)
+            continue;
         thread_vectors[cur_thread].push_back(i);
         cur_thread = (cur_thread >= NUM_OF_THREADS-1) ? 0 : cur_thread+1;
     }
-    auto start = std::chrono::high_resolution_clock::now();
     for (int index = 0; index < NUM_OF_THREADS; index++){
         threads.push_back(std::thread(PrimesThreadLoop, std::ref(prime_counting), std::ref(thread_vectors[index]), index));
     }
@@ -58,7 +60,7 @@ void PrimesMT(long long max){
 int main(int argc, char *argv[], char* envp[]) {
     const std::string help1 = "-h", help2 = "--help";
     std::string arg1, arg2;
-    int number = 250000;
+    int number = 1000000;
     if(argc>3){
         Logger::LogError("More than two argument passed");
         return 1;
