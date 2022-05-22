@@ -1,1 +1,0 @@
-/usr/bin/c++ -O3 -DNDEBUG -rdynamic CMakeFiles/count_primes.dir/src/Logger.cpp.o CMakeFiles/count_primes.dir/src/main.cpp.o -o count_primes 
