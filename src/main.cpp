@@ -8,8 +8,6 @@
 static int NUM_OF_THREADS = std::thread::hardware_concurrency();
 
 bool isPrime(long long number){
-    if(number <=1)
-        return false;
     for(int divisor = 2; divisor <= number/2; divisor++)
         if(number%divisor==0)
             return false;
@@ -19,14 +17,6 @@ bool isPrime(long long number){
 void PrimesThreadLoop_BA(std::vector<long long> &counting, std::vector<long long> &numbers, int index){
     long long prime_counter = 0;
     for(long long number : numbers)
-        if(isPrime(number))
-            prime_counter++;
-    counting[index] = prime_counter;
-}
-
-void PrimesThreadLoop_ED(std::vector<long long> &counting, const long long start, const long long end, int index){
-    long long prime_counter = 0;
-    for(long long number = start; number <= end ;number++)
         if(isPrime(number))
             prime_counter++;
     counting[index] = prime_counter;
@@ -63,6 +53,14 @@ void Primes_BetterAssigning(long long max){
     threads.clear();
 }
 
+void PrimesThreadLoop_ED(std::vector<long long> &counting, const long long start, const long long end, int index){
+    long long prime_counter = 0;
+    for(long long number = start; number <= end ;number++)
+        if(isPrime(number))
+            prime_counter++;
+    counting[index] = prime_counter;
+}
+
 void Primes_EquallyDividing(long long max){
     auto start = std::chrono::high_resolution_clock::now();
     std::vector<std::thread> threads;
@@ -71,7 +69,7 @@ void Primes_EquallyDividing(long long max){
     for(int i = 0; i < NUM_OF_THREADS; i++)
         prime_counting.push_back(0);
     int chunk = max / NUM_OF_THREADS;
-    int prime_start = 0, prime_end = 0;
+    int prime_start = 0, prime_end = 1;
     for (int index = 0; index < NUM_OF_THREADS; index++){
         prime_start = prime_end+1;
         prime_end = (max-prime_start <= chunk) ? max : prime_start + chunk;
