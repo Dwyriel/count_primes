@@ -70,7 +70,7 @@ int main(int argc, char *argv[], char* envp[]) {
         return 0;
     }
     if(argc==1)
-        Logger::LogWarning("You should pass a number as argument, using default number (250000)");
+        Logger::LogWarning("You should pass a number as argument, using default number (" + std::to_string(number) +")");
     else if(argc==2){
         arg1 = argv[1];
         try {
