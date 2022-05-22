@@ -25,6 +25,7 @@ void PrimesThreadLoop(std::vector<long long> &counting, const long long start, c
 }
 
 void PrimesMT(long long max){
+    auto start = std::chrono::high_resolution_clock::now();
     std::vector<std::thread> threads;
     threads.reserve(NUM_OF_THREADS);
     std::vector<long long> prime_counting;
@@ -32,7 +33,6 @@ void PrimesMT(long long max){
         prime_counting.push_back(0);
     int chunk = max / NUM_OF_THREADS;
     int prime_start = 0, prime_end = 0;
-    auto start = std::chrono::high_resolution_clock::now();
     for (int index = 0; index < NUM_OF_THREADS; index++){
         prime_start = prime_end+1;
         prime_end = (max-prime_start <= chunk) ? max : prime_start + chunk;
