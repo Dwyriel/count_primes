@@ -36,7 +36,7 @@ void Primes_BetterAssigning(long long max){
         thread_numbers.push_back(std::vector<long long>());
     }
     thread_numbers[0].push_back(2);
-    int cur_thread = 1;
+    int cur_thread = (NUM_OF_THREADS > 1) ? 1 : 0;
     for(long long i = 3; i <= max; i+=2){
         thread_numbers[cur_thread].push_back(i);
         cur_thread = (cur_thread >= NUM_OF_THREADS-1) ? 0 : cur_thread+1;
