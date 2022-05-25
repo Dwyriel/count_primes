@@ -5,7 +5,7 @@
 #include <vector>
 #include "Logger.h"
 
-static int NUM_OF_THREADS = (std::thread::hardware_concurrency() >= 16) ? std::thread::hardware_concurrency() * 1.1 : std::thread::hardware_concurrency();
+static int NUM_OF_THREADS = std::thread::hardware_concurrency();
 
 bool isPrime(long long number){
     for(int divisor = 2; divisor <= number/2; divisor++)
@@ -122,7 +122,7 @@ int main(int argc, char *argv[], char* envp[]) {
             Logger::LogError("Invalid number of threads, must be a value from 1 to " + std::to_string(NUM_OF_THREADS) + " (total threads in this system)");
                 return 1;
             }
-            NUM_OF_THREADS = (temp_threads >=16) ? temp_threads * 1.1 : temp_threads;
+            NUM_OF_THREADS = temp_threads;
             number = std::stoi(arg2);
         } catch(...){
             Logger::LogError("Arguments must be a number");
@@ -131,7 +131,8 @@ int main(int argc, char *argv[], char* envp[]) {
     }
     Logger::LogInfo("Running on " + std::to_string(NUM_OF_THREADS) + " threads");
     Logger::LogInfo("Total numbers to check: " + std::to_string(number));
-
+    //magic
+    NUM_OF_THREADS =  (NUM_OF_THREADS >= 9 && NUM_OF_THREADS <= 13 && NUM_OF_THREADS != 11) ? NUM_OF_THREADS + 1 : (NUM_OF_THREADS >= 15) ? NUM_OF_THREADS * 1.1 : NUM_OF_THREADS;
     Primes_BetterAssigning(number);
     //Primes_EquallyDividing(number);
 
