@@ -39,6 +39,11 @@ CMakeCache.txt
 count_primes
 Makefile
 
-#kdevelop
+#Kdevelop
 .kde*/
 *.kdev*
+
+#VS stuff?
+CMakeSettings.json
+.vs\
+.vs/
