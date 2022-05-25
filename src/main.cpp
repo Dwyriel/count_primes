@@ -5,6 +5,7 @@
 #include <vector>
 #include "Logger.h"
 
+const int NUM_OF_THREADS_THRESHOLD = 9;
 static int NUM_OF_THREADS = std::thread::hardware_concurrency();
 
 bool isPrime(long long number){
@@ -132,7 +133,7 @@ int main(int argc, char *argv[], char* envp[]) {
     Logger::LogInfo("Running on " + std::to_string(NUM_OF_THREADS) + " threads");
     Logger::LogInfo("Total numbers to check: " + std::to_string(number));
     //magic
-    NUM_OF_THREADS =  (NUM_OF_THREADS >= 9 && NUM_OF_THREADS <= 13 && NUM_OF_THREADS != 11) ? NUM_OF_THREADS + 1 : (NUM_OF_THREADS >= 15) ? NUM_OF_THREADS * 1.1 : NUM_OF_THREADS;
+    NUM_OF_THREADS =  (NUM_OF_THREADS == NUM_OF_THREADS_THRESHOLD) ? NUM_OF_THREADS + 1 : (NUM_OF_THREADS > NUM_OF_THREADS_THRESHOLD) ? NUM_OF_THREADS * 1.1 : NUM_OF_THREADS;
     Primes_BetterAssigning(number);
     //Primes_EquallyDividing(number);
 
