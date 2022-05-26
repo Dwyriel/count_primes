@@ -94,13 +94,13 @@ void Primes_EquallyDividing(long long max){
 int main(int argc, char *argv[], char* envp[]) {
     const std::string help1 = "-h", help2 = "--help";
     std::string arg1, arg2;
-    int number = 1000000;
+    long long number = 1000000;
     if(argc>3){
         Logger::LogError("More than two argument passed");
         return 1;
     }
     if(argc > 1 && (help1.compare(argv[1]) == 0 || help2.compare(argv[1]) == 0)){
-        std::cout << "\033[38;5;252m" << "How to use:" << std::endl << "\t./test *Number*" << std::endl << "\t./test *Threads* *Number*" << "\033[0m" << std::endl;
+        std::cout << "\033[38;5;252m" << "How to use:" << std::endl << "\tcount_primes *Number*" << std::endl << "\tcount_primes *Threads* *Number*" << "\033[0m" << std::endl;
         return 0;
     }
     if(argc==1)
@@ -108,7 +108,11 @@ int main(int argc, char *argv[], char* envp[]) {
     else if(argc==2){
         arg1 = argv[1];
         try {
-            number = std::stoi(arg1);
+            number = std::stoll(arg1);
+            if(number < 2){
+                Logger::LogError("Number must bigger than 1");
+                return 1;
+            }
         } catch(...){
             Logger::LogError("Argument must be a number");
             return 1;
@@ -124,7 +128,11 @@ int main(int argc, char *argv[], char* envp[]) {
                 return 1;
             }
             NUM_OF_THREADS = temp_threads;
-            number = std::stoi(arg2);
+            number = std::stoll(arg2);
+            if(number < 2){
+                Logger::LogError("Number must bigger than 1");
+                return 1;
+            }
         } catch(...){
             Logger::LogError("Arguments must be a number");
             return 1;
