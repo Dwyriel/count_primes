@@ -31,7 +31,9 @@
 *.out
 *.app
 
-#build & cmake 
+#build & cmake
+bin/
+obj/
 build/
 CMakeFiles/
 cmake_install.cmake
@@ -47,3 +49,5 @@ Makefile
 CMakeSettings.json
 .vs\
 .vs/
+.vscode/
+.vscode\
