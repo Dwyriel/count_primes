@@ -40,14 +40,16 @@ cmake_install.cmake
 CMakeCache.txt
 count_primes
 Makefile
+*cmake*/
+*build*/
 
-#Kdevelop
-.kde*/
-*.kdev*
-
-#VS stuff?
+#IDEs
+.idea/
 CMakeSettings.json
 .vs\
 .vs/
 .vscode/
 .vscode\
+.kde*/
+*.kdev*
+.cache/*
