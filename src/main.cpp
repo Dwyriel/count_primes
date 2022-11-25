@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <chrono>
 #include <thread>
 #include <vector>
 #include <Stopwatch/stopwatch.h>

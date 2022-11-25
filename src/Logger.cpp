@@ -1,15 +1,13 @@
 #include <iostream>
 #include <sstream>
 
-const std::string RED = "\033[38;5;196m", ORANGE = "\033[38;5;220m", WHITE = "\033[38;5;252m", RESET = "\033[0m"; //I really hate this console BS, seriously
-const std::string ERROR_LOG_PREFIX = "[ ERROR ] ", WARNING_LOG_PREFIX = "[WARNING] ", INFO_LOG_PREFIX = "[  LOG  ] ";
+const char RED[] = "\033[38;5;196m\0", ORANGE[] = "\033[38;5;220m\0", WHITE[] = "\033[38;5;252m\0", RESET[] = "\033[0m\0"; //I really hate this console BS, seriously
+const char ERROR_LOG_PREFIX[] = "[ ERROR ] \0", WARNING_LOG_PREFIX[] = "[WARNING] \0", INFO_LOG_PREFIX[] = "[  LOG  ] \0";
 
 enum LogLevel : char {ErrorLog, WarningLog, InfoLog};
 
 class Logger
 {
-    Logger() = delete;
-
     template <typename T>
     static void WriteToConsole(const std::string& color, const std::string& prefix, T const& log_text){
         std::cout << color << prefix << log_text << RESET << std::endl;
@@ -23,6 +21,7 @@ class Logger
     }
 
 public:
+    Logger() = delete;
 
     template <typename T>
     static void Log(const char& level, T const& log_text, const bool& writeToFile = false){
