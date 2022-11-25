@@ -1,0 +1,3 @@
+[submodule "Stopwatch"]
+	path = Stopwatch
+	url = https://github.com/Dwyriel/Stopwatch

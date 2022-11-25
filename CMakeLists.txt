@@ -2,8 +2,10 @@ cmake_minimum_required(VERSION 3.0)
 
 project(count_primes)
 
-set (source_dir "${PROJECT_SOURCE_DIR}/src/")
-file(GLOB source_files "${source_dir}/*.cpp")
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set (source_dir "src/")
+file(GLOB source_files "${source_dir}/*.cpp" Stopwatch/stopwatch.cpp)
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     set(BUILD_FOR_WIN TRUE)
