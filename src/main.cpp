@@ -34,7 +34,7 @@ void Primes_BetterAssigning(long long max){
     prime_counting.reserve(NUM_OF_THREADS);
     for (int i = 0; i < NUM_OF_THREADS; i++) {
         prime_counting.push_back(0);
-        thread_numbers.emplace_back(std::vector<long long>());
+        thread_numbers.emplace_back();
     }
     thread_numbers[0].push_back(2);
     int cur_thread = (NUM_OF_THREADS > 1) ? 1 : 0;
@@ -43,7 +43,7 @@ void Primes_BetterAssigning(long long max){
         cur_thread = (cur_thread >= NUM_OF_THREADS-1) ? 0 : cur_thread+1;
     }
     for (int index = 0; index < NUM_OF_THREADS; index++){
-        threads.emplace_back(std::thread(PrimesThreadLoop_BA, std::ref(prime_counting), std::ref(thread_numbers[index]), index));
+        threads.emplace_back(PrimesThreadLoop_BA, std::ref(prime_counting), std::ref(thread_numbers[index]), index);
     }
     for(std::thread& t: threads)
         t.join();
@@ -75,7 +75,7 @@ void Primes_EquallyDividing(long long max){
     for (int index = 0; index < NUM_OF_THREADS; index++){
         prime_start = prime_end+1;
         prime_end = (max-prime_start <= chunk) ? max : prime_start + chunk;
-        threads.emplace_back(std::thread(PrimesThreadLoop_ED, std::ref(prime_counting), prime_start, prime_end, index));
+        threads.emplace_back(&PrimesThreadLoop_ED, std::ref(prime_counting), prime_start, prime_end, index);
     }
     for(std::thread& t: threads)
         t.join();
