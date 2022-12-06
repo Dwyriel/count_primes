@@ -1,3 +1,6 @@
 [submodule "Stopwatch"]
 	path = Stopwatch
 	url = https://github.com/Dwyriel/Stopwatch
+[submodule "Logger"]
+	path = Logger
+	url = https://github.com/Dwyriel/Logger

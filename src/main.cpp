@@ -3,7 +3,7 @@
 #include <thread>
 #include <vector>
 #include <Stopwatch/stopwatch.h>
-#include "Logger.h"
+#include <Logger/logger.h>
 
 const int NUM_OF_THREADS_THRESHOLD = 9;
 static unsigned int NUM_OF_THREADS = std::thread::hardware_concurrency();
@@ -89,6 +89,8 @@ void Primes_EquallyDividing(long long max){
 }
 
 int main(int argc, char *argv[], char* envp[]) {
+    Logger::DisableTimeLogging();
+    Logger::SetOutputFile();
     const std::string help1 = "-h", help2 = "--help";
     std::string arg1, arg2;
     long long number = 1000000;
